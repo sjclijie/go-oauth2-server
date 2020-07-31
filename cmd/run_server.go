@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
@@ -43,8 +44,10 @@ func RunServer(configBackend string) error {
 	// Set the router
 	app.UseHandler(router)
 
+	fmt.Println("server run at :8082")
+
 	// Run the server on port 8080, gracefully stop on SIGTERM signal
-	graceful.Run(":8080", 5*time.Second, app)
+	graceful.Run(":8082", 5*time.Second, app)
 
 	return nil
 }

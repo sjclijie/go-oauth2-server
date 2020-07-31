@@ -2,6 +2,7 @@ package oauth
 
 import (
 	"errors"
+	"fmt"
 	"strings"
 	"time"
 
@@ -10,6 +11,7 @@ import (
 	"github.com/RichardKnop/go-oauth2-server/util/password"
 	"github.com/RichardKnop/uuid"
 	"github.com/jinzhu/gorm"
+	"golang.org/x/crypto/bcrypt"
 )
 
 var (
@@ -58,6 +60,10 @@ func (s *Service) AuthClient(clientID, secret string) (*models.OauthClient, erro
 	client, err := s.FindClientByClientID(clientID)
 	if err != nil {
 		return nil, ErrClientNotFound
+	}
+
+	if b, e := bcrypt.GenerateFromPassword([]byte( secret ), 3); e == nil {
+		fmt.Println("secret: ", string(b))
 	}
 
 	// Verify the secret
